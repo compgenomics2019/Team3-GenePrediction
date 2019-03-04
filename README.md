@@ -2,7 +2,7 @@
 
 ## command for aragorn
 
-wget http://mbio-serv2.mbioekol.lu.se/ARAGORN/Downloads/aragorn1.2.38.tgz \n
+wget http://mbio-serv2.mbioekol.lu.se/ARAGORN/Downloads/aragorn1.2.38.tgz
 tar -xvzf aragorn1.2.38.tgz
 cd aragorn1.2.38
 gcc -O3 -ffast-math -finline-functions -o aragorn aragorn1.2.38.c
