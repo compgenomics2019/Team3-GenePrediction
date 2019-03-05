@@ -97,7 +97,7 @@ run_bedtools(){
   mkdir temp/merged_results
 
   #Find the genes that overlap between the prodigal and genemark predictions (with a minimum fraction of overlap of 0.9)
-  bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/genemark_results/"$0".gff -f 0.90 -wa -wb -wo > temp/merged_results/"$0"_prodigal_genemark.bed
+  bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/genemark_results/"$0".gff -r -f 0.90 -wo > temp/merged_results/"$0"_prodigal_genemark.bed
 
   #Find the genes predicted by prodigal that are not in genemark
   bedtools intersect -a temp/prodigal_results/"0".gff -b temp/genemark_results/"0".gff -v -wa > temp/merged_results/"$0"_prodigal_only.bed
