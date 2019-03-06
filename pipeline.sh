@@ -100,14 +100,16 @@ run_bedtools(){
   cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/genemark_results/"$0".gff -r -f 0.90 -wo > temp/merged_results/"$0"_prodigal_genemark.bed'
 
   #Find the genes predicted by prodigal that are not in genemark
-  cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/prodigal_results/"0".gff -b temp/genemark_results/"0".gff -v -wa > temp/merged_results/"$0"_prodigal_only.bed'
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/genemark_results/"$0".gff -v -wa > temp/merged_results/"$0"_prodigal_only.bed'
 
   #Find the genes predicted by genemark that are not in prodigal
-  cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/genemark_results/"0".gff -b temp/prodigal_results/"0".gff -v -wa > temp/merged_results/"$0"_genemark_only.bed'
-  
-  #Merge all 3 DNA prediction files (prodigal_only, genemark_only, and prodigal_genemark)
-  cat temp/genomes_list.txt | xargs -L2 bash -c 'cat "$0"_prodigal_genemark.bed "$0"_prodigal_only.bed "$0"_genemark_only.bed | sort -k 4 > "$0"_coding_genes.bed'
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/genemark_results/"$0".gff -b temp/prodigal_results/"$0".gff -v -wa > temp/merged_results/"$0"_genemark_only.bed'
 
+  #Merge all 3 DNA prediction files (prodigal_only, genemark_only, and prodigal_genemark)
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'cat "$0"_prodigal_genemark.bed "$0"_prodigal_only.bed "$0"_genemark_only.bed | sort -n -k 4 > temp/merged_results/"$0"_coding_genes.bed'
+
+  #Get fasta file for the coding regions
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools getfasta -fi $input_directory/"$0"."$1" -bed temp/merged_results/"$0"_prodigal_genemark.bed -fo temp/merged_results/"$0"_FINAL.fasta'  
 }
 
 main(){
