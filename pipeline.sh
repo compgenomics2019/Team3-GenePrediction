@@ -104,6 +104,10 @@ run_bedtools(){
 
   #Find the genes predicted by genemark that are not in prodigal
   bedtools intersect -a temp/genemark_results/"0".gff -b temp/prodigal_results/"0".gff -v -wa > temp/merged_results/"$0"_genemark_only.bed
+  
+  #Merge all 3 DNA prediction files (prodigal_only, genemark_only, and prodigal_genemark)
+  cat "$0"_prodigal_genemark.bed "$0"_prodigal_only.bed "$0"_genemark_only.bed | sort -k 4 > "$0"_coding_genes.bed
+
 }
 
 main(){
