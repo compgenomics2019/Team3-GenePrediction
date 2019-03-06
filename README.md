@@ -31,3 +31,38 @@ my $INSTALL\_PATH = "install\_src\_path";
 	$PERL = "perl\_path";
 _test_
 perl rnammer-1.2.src/rnammer -S bac -m lsu,ssu,tsu -multi -gff rnammer.gff -f rnammer.fasta < contigs.fasta
+
+
+## Bacterial Genome Prediction
+
+This pipeline is meant to predict the gene prediction using genome. Gene prediction is the process of finding which regions of genomic DNA encodes genes. Gene prediction not only predicts the DNA encoding but also protein coding genes like RNA genes.  
+
+## Installing Miniconda
+
+First install the bash file for installing Miniconda. Miniconda is comfortable to install different tools. 
+
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+rm  Miniconda3-latest-Linux-x86_64.sh
+export PATH=~/miniconda/bin:$PATH
+```
+
+## Miniconda Create environment from yml file
+
+<!-- Strong -->
+
+You don't need to worry about downloading individual tools. We already made a environment file where if you just download the yml file, it will download the tools for you. 
+
+```
+#Create environment after downloading yml file(on google drive)
+conda-env create -f installs/environment2.yml -n gp
+source activate gp
+```
+
+## Install Genemark-S2 and command and parameters for using gen mark
+
+<!-- Links -->
+[Gene Mark](exon.gatech.edu/)
+
+You need to download Genemark-S2 from the source. The website is from exon.gatech.edu.  You can click on Gene Mark. 
