@@ -36,7 +36,10 @@ _modify the PATH is the src_
 my $INSTALL_PATH = "install_src_path";
 	$HMMSEARCH_BINARY = "hammer_path/hmmer-2.2g/binaries/hmmsearch";
 	$PERL = "perl_path";
+```
 _test_
+
+```
 perl rnammer-1.2.src/rnammer -S bac -m lsu,ssu,tsu -multi -gff rnammer.gff -f rnammer.fasta < contigs.fasta
 ```
 
