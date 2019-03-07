@@ -22,18 +22,23 @@ make check
 ```
 ### install rnammer
 _the link is available for 4 hours_
+
+```
 wget http://www.cbs.dtu.dk/download/4AE7BE96-3ED6-11E9-8B58-A1B3B9CD16B5/rnammer-1.2.src.tar.Z
 cat rnammer-1.2.tar.Z | gunzip | tar xvf -
 cd rnammer-1.2.src
 perl rnammer -S bac -m lsu,ssu,tsu -gff - < example/ecoli.fsa
+```
 
 _modify the PATH is the src_
+
+```
 my $INSTALL\_PATH = "install\_src\_path";
 	$HMMSEARCH_BINARY = "hammer\_path/hmmer-2.2g/binaries/hmmsearch";
 	$PERL = "perl\_path";
 _test_
 perl rnammer-1.2.src/rnammer -S bac -m lsu,ssu,tsu -multi -gff rnammer.gff -f rnammer.fasta < contigs.fasta
-
+```
 
 ## Bacterial Genome Prediction
 
