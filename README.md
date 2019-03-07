@@ -55,4 +55,4 @@ For each input genome, the list of generated outputs is as follows:
 1. gff file containing the coordinates for the coding sequences
 2. fna file for coding nucleotide sequences
 3. faa file for coding protein sequences
-4. fna file for non-coding RNA predictions
+4. fna file for RNA predictions
