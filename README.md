@@ -16,7 +16,7 @@ wget http://eddylab.org/software/hmmer/hmmer-2.2g.tar.gz
 uncompress hmmer-2.2.tar.gz
 tar zxf hmmer-2.2g.tar.gz
 cd hmmer-2.2g/
-./configure --host=host\_name
+./configure --host=host_name
 make
 make check
 ```
@@ -33,9 +33,9 @@ perl rnammer -S bac -m lsu,ssu,tsu -gff - < example/ecoli.fsa
 _modify the PATH is the src_
 
 ```
-my $INSTALL\_PATH = "install\_src\_path";
-	$HMMSEARCH_BINARY = "hammer\_path/hmmer-2.2g/binaries/hmmsearch";
-	$PERL = "perl\_path";
+my $INSTALL_PATH = "install_src_path";
+	$HMMSEARCH_BINARY = "hammer_path/hmmer-2.2g/binaries/hmmsearch";
+	$PERL = "perl_path";
 _test_
 perl rnammer-1.2.src/rnammer -S bac -m lsu,ssu,tsu -multi -gff rnammer.gff -f rnammer.fasta < contigs.fasta
 ```
