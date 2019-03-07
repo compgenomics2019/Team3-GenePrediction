@@ -1,33 +1,58 @@
 # Team3-GenePrediction
 
-## command for aragorn
+## Bacterial ab-initio Gene Prediction Pipeline
 
-wget http://mbio-serv2.mbioekol.lu.se/ARAGORN/Downloads/aragorn1.2.38.tgz
-tar -xvzf aragorn1.2.38.tgz
-cd aragorn1.2.38
-gcc -O3 -ffast-math -finline-functions -o aragorn aragorn1.2.38.c
-./aragorn -t ../contigs.fasta 
+Gene prediction is the process of finding which regions of genomic DNA encodes genes and non-coding RNA.This pipeline is meant to predict coding and non-coding regions in assembled contigs of a bacterial genome. Tool and paramter selection is carried out to ensure best performance for de-novo assembled Listeria monocytogenes genomes.
 
-## command for rnammer
-### install hmmer
-wget http://eddylab.org/software/hmmer/hmmer-2.2g.tar.gz
-uncompress hmmer-2.2.tar.gz
-tar zxf hmmer-2.2g.tar.gz
-cd hmmer-2.2g/
-./configure --host=host\_name
-make
-make check
+## Installation and Setup 
 
-### install rnammer
-_the link is available for 4 hours_
-wget http://www.cbs.dtu.dk/download/4AE7BE96-3ED6-11E9-8B58-A1B3B9CD16B5/rnammer-1.2.src.tar.Z
-cat rnammer-1.2.tar.Z | gunzip | tar xvf -
-cd rnammer-1.2.src
-perl rnammer -S bac -m lsu,ssu,tsu -gff - < example/ecoli.fsa
+This pipeline uses as conda based environment to ensure you have the appropriate dependencies. We recommend that you download and install Miniconda from https://conda.io/en/latest/miniconda.html
 
-_modify the PATH is the src_
-my $INSTALL\_PATH = "install\_src\_path";
-	$HMMSEARCH_BINARY = "hammer\_path/hmmer-2.2g/binaries/hmmsearch";
-	$PERL = "perl\_path";
-_test_
-perl rnammer-1.2.src/rnammer -S bac -m lsu,ssu,tsu -multi -gff rnammer.gff -f rnammer.fasta < contigs.fasta
+Example installation for Miniconda on Linux:
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+rm  Miniconda3-latest-Linux-x86_64.sh
+```
+
+Next, clone the repository into your local system:
+
+```
+git clone  https://github.gatech.edu/compgenomics2019/Team3-GenePrediciton.git
+```
+
+Create and activate a conda environment using the yml file provided in our lib folder:
+
+```
+#Create environment after downloading yml file
+conda-env create -f lib/gp_env.yml -n myenv
+source activate myenv
+```
+
+From within the hmmer-2.2 folder in lib, compile binaries for hmmer-2.2 (dependency for rnammer which is part of our pipeline):
+```
+cd hmmer-2.2
+./configure
+make install
+```
+
+Export path to rnammer,hmmer-2.2 and GeneMarkS-2 to path variable (present in lib folder of repo)
+```
+export PATH=$PATH:<path to rnammer>
+export PATH=$PATH:<path to hmmer-2.2>
+export PATH=$PATH:<path to gms2.pl>
+```
+
+## Running the pipeline
+
+To run our pipeline with sample data provided in our repository (check sample_input folder)
+
+```
+./gp_pipeline.sh -i sample_input -o sample_output
+```
+
+For each input genome, the list of generated outputs is as follows:
+1. gff file containing the coordinates for the coding sequences
+2. fna file for coding nucleotide sequences
+3. faa file for coding protein sequences
+4. fna file for non-coding RNA predictions
