@@ -29,9 +29,17 @@ conda-env create -f lib/gp_env.yml -n myenv
 source activate myenv
 ```
 
-Add export path to rnammer and GeneMarkS-2 to path variable (present in lib folder of repo)
+From within the hmmer-2.2 folder in lib, compile binaries for hmmer-2.2 (dependency for rnammer which is part of our pipeline):
+```
+cd hmmer-2.2
+./configure
+make install
+```
+
+Export path to rnammer,hmmer-2.2 and GeneMarkS-2 to path variable (present in lib folder of repo)
 ```
 export PATH=$PATH:<path to rnammer>
+export PATH=$PATH:<path to hmmer-2.2>
 export PATH=$PATH:<path to gms2.pl>
 ```
 
