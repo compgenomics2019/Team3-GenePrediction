@@ -128,16 +128,16 @@ merge_predictions(){
   #Make directory within temp for merged results
   mkdir temp/merged_results
 
-  #Find the genes that overlap between the prodigal and genemark predictions (with a minimum fraction of overlap of 0.90)
+  #Find the genes that overlap between the prodigal and genemark predictions (with a minimum fraction of overlap of 0.95)
   cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/genemark_results/"$0".gff -r -f 0.95 > temp/merged_results/"$0"_prodigal_genemark.bed'
 
-  #Find the genes that overlap between the glimmer and genemark predictions (with a minimum fraction of overlap of 0.90)
+  #Find the genes that overlap between the glimmer and genemark predictions (with a minimum fraction of overlap of 0.95)
   cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/glimmer_results/"$0".gff -b temp/genemark_results/"$0".gff -r -f 0.95 > temp/merged_results/"$0"_glimmer_genemark.bed'
 
-  #Find the genes that overlap between the prodigal and glimmer predictions (with a minimum fraction of overlap of 0.90)
+  #Find the genes that overlap between the prodigal and glimmer predictions (with a minimum fraction of overlap of 0.95)
   cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/glimmer_results/"$0".gff -r -f 0.95 > temp/merged_results/"$0"_prodigal_glimmer.bed'
 
-  #Find the genes that are predicted by all three tools with a minimum fraction overlap of 0.90 (progigal, genemark, and glimmer)
+  #Find the genes that are predicted by all three tools with a minimum fraction overlap of 0.95 (progigal, genemark, and glimmer)
   cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/merged_results/"$0"_prodigal_genemark.bed -b temp/glimmer_results/"$0".gff -r -f 0.95 > temp/merged_results/"$0"_prodigal_genemark_glimmer.bed'
 
   #Find the genes predicted by prodigal and genemark that are not in glimmer
