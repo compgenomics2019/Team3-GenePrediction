@@ -84,9 +84,20 @@ run_ab_initio(){
   #Make directory within temp for genemark genes
   mkdir temp/genemark_results
 
+  #Make directory within temp for genemark genes
+  mkdir temp/glimmer_results
+
   #Run genemark on genes
   cat temp/genomes_list.txt | xargs -L2 bash -c 'gms2.pl --seq temp/inputs/"$0"."$1" --genome-type bacteria --output temp/genemark_results/"$0".gff --format gff '
 
+  #Make directory for glimmer results
+  mkdir temp/glimmer_results
+
+  #Run glimmer
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'lib/glimmer3.02/scripts/g3-from-scratch.csh temp/inputs/"$0"."$1" temp/glimmer_results/"$0"'
+
+  #Convert glimmer output to gff
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'lib/glimmer_glimmer_to_gff.py temp/glimmer_results/"$0".predict > temp/glimmer_results/"$0".gff'
 }
 
 run_rna (){
@@ -106,7 +117,7 @@ run_rna (){
   #Make
   cat temp/genomes_list.txt | xargs -L2 bash -c 'rnammer -S bac -m lsu,ssu,tsu -multi -gff temp/rnammer/"$0"_rnammer.gff -f temp/rnammer/"$0"_rnammer.fna < temp/inputs/"$0"."$1"'
 
-  cat temp/genomes_list.txt | xargs -L2 bash -c 'cat temp/rnammer/"$0"_rnammer.fna temp/aragorn/"$0"_aragorn.fna > temp/final_results/"$0"_ncRNA.fna'
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'cat temp/rnammer/"$0"_rnammer.fna temp/aragorn/"$0"_aragorn.fna > temp/final_results/"$0"_RNA.fna'
 
   #Move RNA results to final directory
   mv temp/final_results/* $output_directory/
@@ -116,24 +127,18 @@ merge_predictions(){
     #Make directory within temp for merged results
     mkdir temp/merged_results
 
+    #Put results from both into one gff
+    cat temp/genomes_list.txt | xargs -L2 bash -c 'cat temp/prodigal_results/"$0".gff temp/genemark_results/"$0".gff > temp/merged_results/"$0"_both.gff'
+
     #Find the genes that overlap between the prodigal and genemark predictions (with a minimum fraction of overlap of 0.9)
-    cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/genemark_results/"$0".gff -r -f 0.90 -wo > temp/merged_results/"$0"_prodigal_genemark.bed'
-
-    #Find the genes predicted by prodigal that are not in genemark
-    cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/prodigal_results/"$0".gff -b temp/genemark_results/"$0".gff -v -wa > temp/merged_results/"$0"_prodigal_only.bed'
-
-    #Find the genes predicted by genemark that are not in prodigal
-    cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools intersect -a temp/genemark_results/"$0".gff -b temp/prodigal_results/"$0".gff -v -wa > temp/merged_results/"$0"_genemark_only.bed'
-
-    #Merge all 3 DNA prediction files (prodigal_only, genemark_only, and prodigal_genemark)
-    cat temp/genomes_list.txt | xargs -L2 bash -c 'cat temp/merged_results/"$0"_prodigal_genemark.bed temp/merged_results/"$0"_prodigal_only.bed temp/merged_results/"$0"_genemark_only.bed | sort -n -k 4 > temp/merged_results/"$0"_cds.bed'
+    cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools merge -i temp/merged_results/"$0"_both.gff > temp/merged_results/"$0"_cds.gff'
 
     #Get fasta file for the coding regions
-    cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools getfasta -fi temp/inputs/"$0"."$1" -bed temp/merged_results/"$0"_prodigal_genemark.bed -fo temp/merged_results/"$0"_cds.fasta'
+    cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools getfasta -fi temp/inputs/"$0"."$1" -bed temp/merged_results/"$0"_cds.bed -fo temp/merged_results/"$0"_cds.fna'
 
     #Move final files to output directory
     mv temp/merged_results/*_cds.fasta $output_directory/
-    mv temp/merged_results/*_cds.bed $output_directory/
+    mv temp/merged_results/*_cds.gff $output_directory/
 
 }
 
@@ -143,6 +148,7 @@ main(){
   run_ab_initio
   run_rna
   merge_predictions
+  #rm -r temp
 }
 
 main "$@"
