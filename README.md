@@ -36,11 +36,9 @@ cd hmmer-2.2
 make install
 ```
 
-Export path to rnammer,hmmer-2.2 and GeneMarkS-2 to path variable (present in lib folder of repo)
+Export path to 'lib' to path variable (present in lib folder of repo) (contains precompiled binaries for GenemarkS-2, Glimmer, RNAmmer which are part of the pipeline)
 ```
-export PATH=$PATH:<path to rnammer>
-export PATH=$PATH:<path to hmmer-2.2>
-export PATH=$PATH:<path to gms2.pl>
+export PATH=$PATH:<path to lib>
 ```
 
 ## Running the pipeline
@@ -54,5 +52,4 @@ To run our pipeline with sample data provided in our repository (check sample_in
 For each input genome, the list of generated outputs is as follows:
 1. gff file containing the coordinates for the coding sequences
 2. fna file for coding nucleotide sequences
-3. faa file for coding protein sequences
-4. fna file for RNA predictions
+3. fna file for RNA predictions
