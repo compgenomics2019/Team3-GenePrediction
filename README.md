@@ -36,7 +36,7 @@ cd hmmer-2.2
 make install
 ```
 
-Export path to 'lib' to path variable (present in lib folder of repo) (contains precompiled binaries for GenemarkS-2, Glimmer, RNAmmer which are part of the pipeline)
+Export path to 'lib' to path variable (lib contains precompiled binaries for GenemarkS-2, Glimmer, RNAmmer which are part of the pipeline)
 ```
 export PATH=$PATH:<path to lib>
 ```
