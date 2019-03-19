@@ -153,9 +153,14 @@ merge_predictions(){
   cat temp/genomes_list.txt | xargs -L2 bash -c 'cat temp/merged_results/"$0"_prodigal_genemark_glimmer.gff temp/merged_results/"$0"_prodigal_genemark_only.gff temp/merged_results/"$0"_glimmer_genemark_only.gff temp/merged_results/"$0"_prodigal_glimmer_only.gff | sort -n -k 4 > temp/merged_results/"$0"_cds.gff'
 
   #Get fasta file for the coding regions
-  cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools getfasta -fi temp/inputs/"$0"."$1" -bed temp/merged_results/"$0"_cds.gff -fo temp/merged_results/"$0"_cds.fna'
-  
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'bedtools getfasta -s -fi temp/inputs/"$0"."$1" -bed temp/merged_results/"$0"_cds.gff -fo temp/merged_results/"$0"_cds.fna'
+ 
+  #Get amino acid seqs (first reading frame) from cds file
+  cat temp/genomes_list.txt | xargs -L2 bash -c 'transeq temp/merged_results/"$0"_cds.fna -outseq temp/merged_results/"$0"_cds.faa -trim -clean'
+
+
   #Move final files to output directory
+  mv temp/merged_results/*_cds.faa $output_directory/
   mv temp/merged_results/*_cds.fna $output_directory/
   mv temp/merged_results/*_cds.gff $output_directory/
 
