@@ -10,11 +10,10 @@ get_input() {
                         -h : Print usage instructions"
 
   # Getopts block, will take in the arguments as inputs and assign them to variables
-        while getopts "i:o:vh" option; do
+        while getopts "i:o:h" option; do
                 case $option in
                         i) input_directory=$OPTARG;;
                         o) output_directory=$OPTARG;;
-                        v) v=1;;
                         h) echo "$usage"
                               exit 0;;
                        \?) echo "Invalid option."
@@ -45,7 +44,7 @@ get_input() {
 		echo "Output directory already exists, would you like to overwrite? Reply with y/n"
 		read answer
 		case $answer in
-			y) echo "Overwriting folder $output in subsequent steps";;
+			y) echo "Overwriting folder $output_directory in subsequent steps";;
 			n) echo "Folder overwrite denied, exiting pipeline"
 				exit 1;;
 			\?) echo "Incorrect option specified, exiting pipeline"
