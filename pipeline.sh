@@ -84,9 +84,6 @@ run_ab_initio(){
   #Make directory within temp for genemark genes
   mkdir temp/genemark_results
 
-  #Make directory within temp for genemark genes
-  mkdir temp/glimmer_results
-
   #Run genemark on genes
   cat temp/genomes_list.txt | xargs -L2 bash -c 'lib/gms2_linux_64/gms2.pl --seq temp/inputs/"$0"."$1" --genome-type bacteria --output temp/genemark_results/"$0".gff --format gff '
 
